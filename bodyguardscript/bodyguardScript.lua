@@ -10,6 +10,7 @@ Changelog:
 4: Moved some stuff out of the BodyguardScript table to local variables. 
 Removed 3 functions and moved their contents to the tick function.
 Renamed some variables, fixed some errors and moved the variables to tick function
+5: Fixing some errors and moved variables back where they where before.
 ]]
 
 --[["WEAPON_KNIFE", "WEAPON_NIGHTSTICK", "WEAPON_HAMMER", "WEAPON_BAT", "WEAPON_GOLFCLUB", "WEAPON_CROWBAR",
@@ -23,7 +24,32 @@ Renamed some variables, fixed some errors and moved the variables to tick functi
 	"WEAPON_PROXMINE", "WEAPON_SNOWBALL", "WEAPON_VINTAGEPISTOL", "WEAPON_DAGGER", "WEAPON_FIREWORK", "WEAPON_MUSKET",
 	"WEAPON_MARKSMANRIFLE", "WEAPON_HEAVYSHOTGUN", "WEAPON_GUSENBERG", "WEAPON_HATCHET", "WEAPON_RAILGUN"]]
 
+--Main table.
 local bodyguardScript = {}
+
+--Guard table
+local guards = {}
+--Player variables
+local playerPed = PLAYER.PLAYER_PED_ID() -- Do not touch this!
+local player = PLAYER.GET_PLAYER_PED(playerPed) -- Do not touch this!
+local playerExists = ENTITY.DOES_ENTITY_EXIST(playerPed) -- Do not touch this!
+local playerPosition = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(playerPed, 0.0, 5.0, 0.0) -- Do not touch this!
+local playerGroup = PED.GET_PED_GROUP_INDEX(playerPed) -- Do not touch this!
+
+--Weapons tables
+local mainWeapons = {"WEAPON_ASSAULTRIFLE", "WEAPON_CARBINERIFLE", "WEAPON_ADVANCEDRIFLE", 
+"WEAPON_MG", "WEAPON_COMBATMG", "WEAPON_PUMPSHOTGUN", "WEAPON_SAWNOFFSHOTGUN", 
+"WEAPON_ASSAULTSHOTGUN", "WEAPON_BULLPUPSHOTGUN", "WEAPON_SNIPERRIFLE", 
+"WEAPON_HEAVYSNIPER"}
+local secondaryWeapons = {"WEAPON_PISTOL", "WEAPON_COMBATPISTOL", "WEAPON_APPISTOL",
+"WEAPON_PISTOL50", "WEAPON_MICROSMG", "WEAPON_SMG", "WEAPON_ASSAULTSMG"}
+
+--Skins table
+local Skins = {"s_m_y_blackops_01", "s_m_y_blackops_02"}
+
+--Number variables.
+local bodyguardCount = 0
+local amountAllowed = 3
 
 function bodyguardScript.unload()
 	for k, guard in pairs(guards) do
@@ -48,31 +74,6 @@ function bodyguardScript.deleteOnDead()
 end
 
 function bodyguardScript.tick()
-	--Player variables
-	local playerPed = PLAYER.PLAYER_PED_ID() -- Do not touch this!
-	local player = PLAYER.GET_PLAYER_PED(playerPed) -- Do not touch this!
-	local playerExists = ENTITY.DOES_ENTITY_EXIST(playerPed) -- Do not touch this!
-	local playerPosition = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(playerPed, 0.0, 5.0, 0.0) -- Do not touch this!
-	local playerGroup = PED.GET_PED_GROUP_INDEX(playerPed) -- Do not touch this!
-
-	--Weapons tables
-	local mainWeapons = {"WEAPON_ASSAULTRIFLE", "WEAPON_CARBINERIFLE", "WEAPON_ADVANCEDRIFLE", 
-	"WEAPON_MG", "WEAPON_COMBATMG", "WEAPON_PUMPSHOTGUN", "WEAPON_SAWNOFFSHOTGUN", 
-	"WEAPON_ASSAULTSHOTGUN", "WEAPON_BULLPUPSHOTGUN", "WEAPON_SNIPERRIFLE", 
-	"WEAPON_HEAVYSNIPER"}
-	local secondaryWeapons = {"WEAPON_PISTOL", "WEAPON_COMBATPISTOL", "WEAPON_APPISTOL",
-	"WEAPON_PISTOL50", "WEAPON_MICROSMG", "WEAPON_SMG", "WEAPON_ASSAULTSMG"}
-
-	--Skins table
-	local Skins = {"s_m_y_blackops_01", "s_m_y_blackops_02"}
-
-	--Number variables.
-	local bodyguardCount = 0
-	local amountAllowed = 3
-
-	--Guards table.
-	local guards = {}
-
 	if (get_key_pressed(45)) then
 		for _, m in pairs(Skins) do
 			STREAMING.REQUEST_MODEL(GAMEPLAY.GET_HASH_KEY(m))
@@ -85,7 +86,7 @@ function bodyguardScript.tick()
 		end
 
 		for i = 0, amountAllowed, 1 do
-			if (bodyguardCount <= amountAllowed) then
+			if (bodyguardCount < amountAllowed) then
 				guards[i] = PED.CREATE_PED(26,
 				GAMEPLAY.GET_HASH_KEY(Skins[math.random(#Skins)]),
 				playerPosition.x,
@@ -98,10 +99,12 @@ function bodyguardScript.tick()
 				PED.SET_PED_CAN_SWITCH_WEAPON(guards[i], true)
 				PED.SET_PED_AS_GROUP_MEMBER(guards[i], playerGroup)
 
-				WEAPON.GIVE_DELAYED_WEAPON_TO_PED(guards[i], GAMEPLAY.GET_HASH_KEY(secondaryWeapons[math.random(#secondaryWeapons)]), 1000, false)
-				WEAPON.GIVE_DELAYED_WEAPON_TO_PED(guards[i], GAMEPLAY.GET_HASH_KEY(mainWeapons[math.random(#mainWeapons)]), 1000, false)
+				WEAPON.GIVE_DELAYED_WEAPON_TO_PED(guards[i], GAMEPLAY.GET_HASH_KEY(secondaryWeapons[math.random(#secondaryWeapons)]), 5, false)
+				WEAPON.GIVE_DELAYED_WEAPON_TO_PED(guards[i], GAMEPLAY.GET_HASH_KEY(mainWeapons[math.random(#mainWeapons)]), 10, false)
 
 				bodyguardCount = bodyguardCount + 1
+				
+				--print(bodyguardCount)
 			end
 		end
 	end
