@@ -1,16 +1,16 @@
 --[[
-Bodyguard Script by Foul Play. This is WIP so there will be bugs. Version 4
+Bodyguard Script by Foul Play. This is WIP so there will be bugs. Version 1.5
 ]]
 
 --[[
 Changelog:
-1: First Test Version.
-2: Fixed errors.
-3: Fixed more errors.
-4: Moved some stuff out of the BodyguardScript table to local variables. 
+1.1: First Test Version.
+1.2: Fixed errors.
+1.3: Fixed more errors.
+1.4: Moved some stuff out of the BodyguardScript table to local variables. 
 Removed 3 functions and moved their contents to the tick function.
 Renamed some variables, fixed some errors and moved the variables to tick function
-5: Fixing some errors and moved variables back where they where before.
+1.5: Fixing some errors and moved variables back where they where before.
 ]]
 
 --[["WEAPON_KNIFE", "WEAPON_NIGHTSTICK", "WEAPON_HAMMER", "WEAPON_BAT", "WEAPON_GOLFCLUB", "WEAPON_CROWBAR",
