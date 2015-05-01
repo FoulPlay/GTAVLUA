@@ -1,20 +1,22 @@
-TODO: Fix grammar.
+You need the Lua plugin for ScriptHookV for the script to run. You can get it here: http://gtaforums.com/topic/789139-vrelhook-lua-plugin-for-script-hook-v/
+
+To install this script:
+
+1. Download Lua plugin for ScriptHookV
+
+2. Unzip the contents into a seperate folder and put them into GTAV installation folder. (Where GTA5.exe, GTAVLauncher.exe, etc. is located.)
+
+3. Go into the "scripts" folder and go into the "addins" folder (Option: You can delete the Lua scripts in there. (Recommemded to delete them or backup them somewhere else.))
+
+4. Put the script in the "addins" folder
+
+5. Start up GTA V and use the button that reloads the addons. The script is now installed and ready to run.
 
 
-YOU NEED THIS TO RUN THE SCRIPT!
 
-http://gtaforums.com/topic/789139-vrelhook-lua-plugin-for-script-hook-v/
+Known issue: The script loads up at start BUT because the models don't load ingame, you have to reload all addons to get the models to load so the bodyguards can spawn. I'm working to fix this issue.
 
-Install: To install, put the script in your "addins" folder in the "scripts" folder.
-
-
-Known issue: This doesn't run on startup. You need to reload all addons to get it working. 
-This could be a bug with the Lua hook for ScriptHookV. I still don't know why it doesn't work on start up.
+How to use the script: Press the Insert key to spawn them and press the Delete button to remove them.
 
 
-Use the "Insert" button to spawn them.
-
-
-Use the "Delete" button to delete them.
-
-They will be automatically deleted when they are dead.
+When the bodyguards die, they will be automatically deleted.
