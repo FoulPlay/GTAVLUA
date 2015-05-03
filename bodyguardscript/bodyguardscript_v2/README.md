@@ -12,20 +12,6 @@ To install this script:
 
 5. Start up GTA V and use the button that reloads the addons. The script is now installed and ready to run.
 
-
-<<<<<<< HEAD
-Known issue: The script loads up at start BUT because the models don't load ingame, you have to reload all addons to get the models to load so the bodyguards can spawn. I'm working to fix this issue.
+Known issue: The script loads up at start BUT because the models don't load ingame, you have to reload all addons to get the models to load so the bodyguards can spawn. Fixed in version 2.1.
 
 How to use the script: Press the Insert key to spawn them and press the Delete button to remove them.
-
-
-When the bodyguards die, they will be automatically deleted.
-=======
-
-Known issue: The script loads up at start BUT because the models don't load ingame, you have to reload all addons to get the models to load so the bodyguards can spawn. I'm working to fix this issue.
-
-How to use the script: Press the Insert key to spawn them and press the Delete button to remove them.
-
-
-When the bodyguards die, they will be automatically deleted.
->>>>>>> origin/master
