@@ -194,7 +194,7 @@ function bodyguardScript.unloadPedModels()
 				" has been set to 'NO LONGER NEEDED'." )
 				break
 			end
-			wait(1)
+			wait(10)
 		end
 	end
 end
@@ -212,7 +212,7 @@ function bodyguardScript.loadPedModels()
 					print("[bodyguardScript.loadPedModels]: Model: " .. m .. "(" .. model_hash .. ")" .. " been loaded.")
 					break
 				end
-				wait(1)
+				wait(10)
 			end
 		end
 	end
@@ -237,10 +237,9 @@ function bodyguardScript.applyWeaponsToBodyguards(i)
 	local rndSWeapon = math.random(#secondaryWeapons)
 	local rndPWeapon = math.random(#primaryWeapons)
 
-	wait(1)
-	WEAPON.GIVE_DELAYED_WEAPON_TO_PED(guards[i], GAMEPLAY.GET_HASH_KEY(meleeWeapons[rndMWeapon]), 1, true)
-	WEAPON.GIVE_DELAYED_WEAPON_TO_PED(guards[i], GAMEPLAY.GET_HASH_KEY(secondaryWeapons[rndSWeapon]), 2, true)
-	WEAPON.GIVE_DELAYED_WEAPON_TO_PED(guards[i], GAMEPLAY.GET_HASH_KEY(primaryWeapons[rndPWeapon]), 3, true)
+	WEAPON.GIVE_DELAYED_WEAPON_TO_PED(guards[i], GAMEPLAY.GET_HASH_KEY(meleeWeapons[rndMWeapon]), 500, true)
+	WEAPON.GIVE_DELAYED_WEAPON_TO_PED(guards[i], GAMEPLAY.GET_HASH_KEY(secondaryWeapons[rndSWeapon]), 500, true)
+	WEAPON.GIVE_DELAYED_WEAPON_TO_PED(guards[i], GAMEPLAY.GET_HASH_KEY(primaryWeapons[rndPWeapon]), 500, true)
 end
 
 function bodyguardScript.tick()
