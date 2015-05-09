@@ -1,6 +1,6 @@
 --[[
 Bodyguard Script by Foul Play. This script is WIP, there will be bugs. 
-Version: 2.0
+Version: 2.1
 Please report bugs to https://github.com/FoulPlay/GTAVLUA/issues
 ]]
 
