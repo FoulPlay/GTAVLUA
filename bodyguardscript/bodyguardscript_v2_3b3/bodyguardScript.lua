@@ -1,6 +1,6 @@
 --[[
 Bodyguard Script by Foul Play. This script is WIP, there will be bugs. 
-Version: 2.3b2
+Version: 2.3b3
 Please report bugs to https://github.com/FoulPlay/GTAVLUA/issues
 ]]
 
@@ -53,6 +53,11 @@ Please report bugs to https://github.com/FoulPlay/GTAVLUA/issues
 	+Fixed a bug where script not getting new player ped so when you change to Franklin, Michael or Trevor
 	bodyguards do not spawn.
 	+More undocumented changes.
+	
+	2.3b3 [17/05/15]
+	*Beta version 3
+	+Added teleportation for bodyguards.
+	+More undocumented changes. 
 ]]
 
 --Reference for guns
@@ -153,7 +158,9 @@ local bodyguardScript = {} --Do not touch this!
 --Guard table
 local guards = {} --Do not touch this!
 
-local bodyguardsInvincibleEnabled = true
+local bodyguardsInvincibleEnabled = true --true to enable invincible and false to disable.
+
+local bodyguardVehicle = "CAVALCADE2"
 
 --Weapons tables
 local rndMeleeWeapons = {"WEAPON_KNIFE", "WEAPON_CROWBAR"} --You can modify this with any melee weapons.
@@ -172,6 +179,7 @@ local RndModels_table = {"s_f_y_hooker_03", "g_m_y_salvaboss_01", "u_f_y_corpse_
 --Number variables.
 local bodyguardCount = 0 --Do not touch this!
 local amountAllowed = 3 --You can modify this up to 7 guards!
+local bodyguardInVehicle = 0 -- Do not touch this!
 
 --Single Ped Model
 local pedModel = "s_m_y_blackops_01" --You can modify this with any model.
@@ -319,11 +327,49 @@ function bodyguardScript.GetRndModel()
 	end
 end
 
+function bodyguardScript.teleportbodyguardsToPlayer()
+	local playerPed = PLAYER.PLAYER_PED_ID()
+	local player = PLAYER.GET_PLAYER_PED(playerPed)
+	local playerPosition = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(playerPed, 0.0, 2.5, 0.0)--Do not touch this!
+
+	for k, guard in pairs(guards) do
+		if (guard ~= nil) then
+			if (not PED.IS_PED_IN_ANY_VEHICLE(playerPed, false) and not PED.IS_PED_IN_ANY_VEHICLE(guard, false)) then
+				ENTITY.SET_ENTITY_COORDS(guard, playerPosition.x, playerPosition.y,
+				playerPosition.z, false, false, false, false)
+				print("[bodyguardScript.teleportbodyguardsToPlayer]: Part 1: I'm working.")
+			elseif(PED.IS_PED_IN_ANY_VEHICLE(playerPed, false) and not PED.IS_PED_IN_ANY_VEHICLE(guard, false)) then
+				ENTITY.SET_ENTITY_COORDS(guard, playerPosition.x, playerPosition.y,
+				playerPosition.z, false, false, false, false)
+				print("[bodyguardScript.teleportbodyguardsToPlayer]: Part 2: I'm working.")
+			end
+		end
+	end
+end
+
+--[[function bodyguardScript.followPlayerInVehicle()
+	local playerPed = PLAYER.PLAYER_PED_ID()
+	local player = PLAYER.GET_PLAYER_PED(playerPed)
+	local playerPosition = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(playerPed, 0.0, 5.0, 0.0)--Do not touch this!
+	STREAMING.REQUEST_MODEL(bodyguardVehicle)
+
+	while (not STREAMING.HAS_MODEL_LOADED(bodyguardVehicle)) do
+		wait(10)
+	end
+	--local veh = VEHICLE.CREATE_VEHICLE(bodyguardVehicle, playerPosition.x, playerPosition.y, playerPosition.z, 0.0, 1, 1)
+	if 
+	for k, guard in pairs(guards) do
+		if (guard ~= nil) then
+			
+		end
+	end
+end]]
+
 function bodyguardScript.tick()
 	local playerPed = PLAYER.PLAYER_PED_ID()--Do not touch this!
 	local player = PLAYER.GET_PLAYER_PED(playerPed)--Do not touch this!
 	local playerExists = ENTITY.DOES_ENTITY_EXIST(playerPed)--Do not touch this!
-	local playerPosition = ENTITY.GET_ENTITY_COORDS(playerPed, true)--Do not touch this!
+	local playerPosition = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(playerPed, 0.0, 5.0, 0.0)--Do not touch this!
 	local playerGroup = PED.GET_PED_GROUP_INDEX(playerPed)--Do not touch this!
 
 	if (get_key_pressed(45) and playerExists) then
@@ -336,7 +382,7 @@ function bodyguardScript.tick()
 					guards[i] = PED.CREATE_PED(26,
 					GAMEPLAY.GET_HASH_KEY(bodyguardScript.GetRndModel()),
 					playerPosition.x,
-					playerPosition.y + 5,
+					playerPosition.y,
 					playerPosition.z,
 					1,
 					false,
@@ -354,7 +400,7 @@ function bodyguardScript.tick()
 					guards[i] = PED.CREATE_PED(26,
 					GAMEPLAY.GET_HASH_KEY(pedModel),
 					playerPosition.x,
-					playerPosition.y + 5,
+					playerPosition.y,
 					playerPosition.z,
 					1,
 					false,
@@ -378,6 +424,10 @@ function bodyguardScript.tick()
 
 	if (get_key_pressed(46) and playerExists) then
 		bodyguardScript.unload()
+	end
+	
+	if (get_key_pressed(35) and playerExists) then
+		bodyguardScript.teleportbodyguardsToPlayer()
 	end
 
 	bodyguardScript.deleteOnDead()
